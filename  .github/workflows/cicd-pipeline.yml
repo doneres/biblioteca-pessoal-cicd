@@ -49,3 +49,27 @@ jobs:
           context: .
           push: true
           tags: ghcr.io/${{ github.repository }}:latest
+
+  deploy-development:
+    name: Deploy em Homologação
+    runs-on: ubuntu-latest
+    needs: build-and-push-docker
+    environment:
+      name: staging
+      url: https://development.biblioteca-pessoal.com
+    steps:
+      - name: Deploy para ambiente de development
+        run: |
+          echo "Deploy para development..."
+
+    deploy-production:
+      name: Deploy em Produção
+      runs-on: ubuntu-latest
+      needs: deploy-development
+      environment:
+        name: production
+        url: https://biblioteca-pessoal.com
+      steps:
+        - name: Deploy para ambiente de Produção
+          run: |
+            echo "Deploy para Produção..."
